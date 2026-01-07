@@ -356,10 +356,10 @@ export default function App() {
             {[
               // Interview
               { title: 'Interview -Lazy', category: 'Interview', driveUrl: 'https://drive.google.com/file/d/1P6W136wc2iE5zxCuVfaLka7bumoqUood/view', thumbnail: '/miniature/interview1.png' },
-              { title: 'Interview - Fabrice et Paulette', category: 'Interview', driveUrl: 'https://drive.google.com/file/d/1hy77gNUqS5OssmJcFSSbwmemx8hzwdRn/view', thumbnail: '/miniature/interview2.png' },
+              { title: 'Interview - BazeHouse', category: 'Interview', driveUrl: 'https://drive.google.com/file/d/1hy77gNUqS5OssmJcFSSbwmemx8hzwdRn/view', thumbnail: '/miniature/interview2.png' },
               // Pub
-              { title: 'Heloshot - Pub Gamme Hydro', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/1HyG7wXRJ1DX92j1C0ZbmO2PLP7v1yWF5/view', thumbnail: '/miniature/pub1.png' },
-              { title: 'Nation - Pub Ouverture Boite', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/121k2BQcfaER2lJn93HwWzrebpdZANZra/view', thumbnail: '/miniature/pub2.png' },
+              { title: 'Publicité - HeloShot', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/1HyG7wXRJ1DX92j1C0ZbmO2PLP7v1yWF5/view', thumbnail: '/miniature/pub1.png' },
+              { title: 'Publicité - Nation', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/121k2BQcfaER2lJn93HwWzrebpdZANZra/view', thumbnail: '/miniature/pub2.png' },
             ].filter(video => activeCategory === 'Tous' || video.category === activeCategory).map((video, i) => (
               <div key={i} className="group cursor-pointer" onClick={() => openVideo(video.driveUrl)}>
                 <div className="relative aspect-video rounded-2xl overflow-hidden bg-neutral-900 mb-4">
