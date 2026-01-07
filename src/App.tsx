@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
-import { Mail, Play, MessageCircle, X, Send, XCircle, ChevronLeft, ChevronRight, Expand, ArrowRight, Sparkles } from 'lucide-react';
+import { Mail, Play, MessageCircle, X, Send, XCircle, ChevronLeft, ChevronRight, Expand, ArrowRight, Sparkles, Star } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -32,6 +32,20 @@ const skills = [
   { name: 'Motion', desc: 'Animation & Motion Design' },
   { name: 'Photo', desc: 'Shooting & Retouche' },
   { name: 'Réel', desc: 'Réseaux sociaux & Viral' },
+];
+
+// Logos partenaires
+const partnerLogos: string[] = [
+  '/marque/LOGO-HOLESHOT-HORIZ.png',
+  '/marque/Logo-Bazehouse1.png',
+  '/marque/Logo_HBi-04.png',
+  '/marque/Logo_EVOM_vert.png',
+  '/marque/logo Solution recouvrement.png',
+  '/marque/logo RT connecting.png',
+  '/marque/nation_beta_logo.jpeg',
+  '/marque/images.jpeg',
+  '/marque/1630608594440.jpeg',
+  '/marque/lien-AVLaw9pprauvZM4M.webp.jpeg',
 ];
 
 // Composants optimisés
@@ -131,14 +145,21 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (messages.length > 0) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages.length]);
 
   useEffect(() => {
-    if (chatOpen && messages.length === 0) {
-      setMessages([{ id: '1', text: 'Bonjour! Comment puis-je vous aider?', sender: 'bot', timestamp: new Date() }]);
+    if (chatOpen) {
+      setMessages(prev => {
+        if (prev.length === 0) {
+          return [{ id: '1', text: 'Bonjour! Comment puis-je vous aider?', sender: 'bot', timestamp: new Date() }];
+        }
+        return prev;
+      });
     }
-  }, [chatOpen, messages.length]);
+  }, [chatOpen]);
 
   const handleChatSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -316,7 +337,7 @@ export default function App() {
           
           {/* Filtres par catégorie */}
           <div className="flex flex-wrap gap-2 mb-10">
-            {['Tous', 'Interview', 'Motion', 'Pub', 'Réel'].map((cat) => (
+            {['Tous', 'Interview', 'Pub'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -334,26 +355,25 @@ export default function App() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               // Interview
-              { title: 'Interview #1', category: 'Interview', driveUrl: 'https://drive.google.com/file/d/1P6W136wc2iE5zxCuVfaLka7bumoqUood/view' },
-              { title: 'Interview #2', category: 'Interview', driveUrl: 'https://drive.google.com/file/d/1hy77gNUqS5OssmJcFSSbwmemx8hzwdRn/view' },
-              // Motion
-              { title: 'Motion #1', category: 'Motion', driveUrl: 'https://drive.google.com/file/d/1rdt2JuTKUWjuXDcpranjLFvFNVCEA_Jq/view' },
-              { title: 'Motion #2', category: 'Motion', driveUrl: 'https://drive.google.com/file/d/1JVq9eGOBH-g_a_lnCz_fUlbPtSepzYG2/view' },
-              { title: 'Motion #3', category: 'Motion', driveUrl: 'https://drive.google.com/file/d/1RmX3-Lb8k4vOLdpNDjHyI3FkJPuOmU2w/view' },
-              { title: 'Motion #4', category: 'Motion', driveUrl: 'https://drive.google.com/file/d/1AK1R5AjEJqI8k7RIGokX-5qWIPLAK6AI/view' },
-              { title: 'Motion #5', category: 'Motion', driveUrl: 'https://drive.google.com/file/d/1bin8zrhzlUqlrvDZWxt5l_VTKT989pcN/view' },
+              { title: 'Interview -Lazy', category: 'Interview', driveUrl: 'https://drive.google.com/file/d/1P6W136wc2iE5zxCuVfaLka7bumoqUood/view', thumbnail: '/miniature/interview1.png' },
+              { title: 'Interview - Fabrice et Paulette', category: 'Interview', driveUrl: 'https://drive.google.com/file/d/1hy77gNUqS5OssmJcFSSbwmemx8hzwdRn/view', thumbnail: '/miniature/interview2.png' },
               // Pub
-              { title: 'Pub #1', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/1HyG7wXRJ1DX92j1C0ZbmO2PLP7v1yWF5/view' },
-              { title: 'Pub #2', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/121k2BQcfaER2lJn93HwWzrebpdZANZra/view' },
-              // Réel
-              { title: 'Réel #1', category: 'Réel', driveUrl: 'https://drive.google.com/file/d/1pZLTe0-hZ65g89vlo6_kxuv9f4Z1Ac9K/view' },
-              { title: 'Réel #2', category: 'Réel', driveUrl: 'https://drive.google.com/file/d/1JtmbFyNNXDYZ8ILpCjTSiJEIVDB03Rkc/view' },
-              { title: 'Réel #3', category: 'Réel', driveUrl: 'https://drive.google.com/file/d/1NvSSmAs6rTcyse9gyfrN37MFIWPVazOD/view' },
-              { title: 'Réel #4', category: 'Réel', driveUrl: 'https://drive.google.com/file/d/1rVIH47eywy8D63xQppsip8AC__qsiuM-/view' },
+              { title: 'Heloshot - Pub Gamme Hydro', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/1HyG7wXRJ1DX92j1C0ZbmO2PLP7v1yWF5/view', thumbnail: '/miniature/pub1.png' },
+              { title: 'Nation - Pub Ouverture Boite', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/121k2BQcfaER2lJn93HwWzrebpdZANZra/view', thumbnail: '/miniature/pub2.png' },
             ].filter(video => activeCategory === 'Tous' || video.category === activeCategory).map((video, i) => (
               <div key={i} className="group cursor-pointer" onClick={() => openVideo(video.driveUrl)}>
                 <div className="relative aspect-video rounded-2xl overflow-hidden bg-neutral-900 mb-4">
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-amber-600/5" />
+                  {video.thumbnail ? (
+                    <img 
+                      src={video.thumbnail} 
+                      alt={video.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-amber-600/5" />
+                  )}
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center group-hover:bg-yellow-400 group-hover:scale-110 transition-all duration-300 border border-white/10">
                       <Play className="w-7 h-7 text-white group-hover:text-black ml-1 transition-colors" />
@@ -396,6 +416,119 @@ export default function App() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section id="avis" className="py-32 px-6 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-yellow-400 font-medium mb-4 tracking-wide text-sm">TÉMOIGNAGES</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+              Ce que disent nos
+              <span className="text-white/40"> clients</span>
+            </h2>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                name: 'Holeshot',
+                role: 'Client',
+                text: 'Appât nous a permis de mettre en vidéo les idées que l\'on avait en tête. Après une réunion où nous avons pu exposer nos idées et nos attentes, Appât a parfaitement rempli la tâche que l\'on attendait d\'eux pour notre nouvelle gamme.',
+                rating: 4
+              },
+              {
+                name: 'Wake up',
+                role: 'Client',
+                text: 'Le montage proposé par Appât répondait totalement à notre vision.',
+                rating: 5
+              },
+              {
+                name: 'Sophie Martin',
+                role: 'Directrice Marketing, TechCorp',
+                text: 'APPÂT a transformé notre vision en réalité. Leur direction artistique et leur expertise en motion design ont donné vie à notre campagne. Un rendu professionnel et créatif qui dépasse nos attentes.',
+                rating: 4
+              }
+            ].map((testimonial, i) => (
+              <div key={i} className="p-6 bg-white/[0.03] rounded-2xl border border-white/5 hover:border-yellow-400/20 hover:bg-white/[0.05] transition-all">
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: 5 }, (_, j) => (
+                    <Star 
+                      key={`star-${i}-${j}`} 
+                      className={`w-4 h-4 ${
+                        j < testimonial.rating 
+                          ? 'fill-yellow-400 text-yellow-400' 
+                          : 'fill-white/20 text-white/20'
+                      }`} 
+                    />
+                  ))}
+                </div>
+                <p className="text-white/70 mb-6 leading-relaxed text-sm">
+                  &ldquo;{testimonial.text}&rdquo;
+                </p>
+                <div>
+                  <p className="font-semibold text-white mb-1">{testimonial.name}</p>
+                  <p className="text-sm text-white/50">{testimonial.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Partners */}
+      <section id="partenaires" className="py-24 px-6 bg-gradient-to-b from-transparent via-white/[0.01] to-transparent">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-yellow-400 font-medium mb-4 tracking-wide text-sm">PARTENAIRES</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              Ils nous font
+              <span className="text-white/40"> confiance</span>
+            </h2>
+          </div>
+          
+          {partnerLogos && partnerLogos.length > 0 ? (
+            <div className="partners-container">
+              <div className="partners-scroll flex items-center">
+                {/* Première série de logos */}
+                {partnerLogos.map((logo, i) => (
+                  <div key={`partner-${i}`} className="flex-shrink-0 w-32 h-24 mx-4 flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 hover:border-yellow-400/20 transition-all group">
+                    <img 
+                      src={logo} 
+                      alt={`Partenaire ${i + 1}`}
+                      className="max-w-full max-h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+                {/* Deuxième série (dupliquée pour l'effet de boucle) */}
+                {partnerLogos.map((logo, i) => (
+                  <div key={`partner-duplicate-${i}`} className="flex-shrink-0 w-32 h-24 mx-4 flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 hover:border-yellow-400/20 transition-all group">
+                    <img 
+                      src={logo} 
+                      alt={`Partenaire ${i + 1}`}
+                      className="max-w-full max-h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center opacity-40">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={`placeholder-${i}`} className="w-full h-24 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-yellow-400/20 transition-all">
+                    <span className="text-white/20 text-xs font-medium">Logo {i}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-center text-white/40 text-sm mt-8">
+                Ajoutez vos logos dans <code className="bg-white/5 px-2 py-1 rounded text-xs">public/partenaires/</code> et mettez à jour le tableau <code className="bg-white/5 px-2 py-1 rounded text-xs">partnerLogos</code> dans le code
+              </p>
+            </>
+          )}
         </div>
       </section>
 
