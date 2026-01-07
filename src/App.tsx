@@ -20,10 +20,10 @@ const shootingPhotos = [
 const teamMembers = [
   { name: 'Léo Navarro', role: 'Directeur Marketing', image: '/equipe/DSC00009.jpg' },
   { name: 'Matteo Brosolo', role: 'Directeur Communication', image: '/equipe/DSC00011.jpg' },
-  { name: 'Matteo Leite', role: 'Co-fondateur & Vidéaste', image: '/equipe/DSC00013.jpg' },
+  { name: 'Matteo Leite', role: 'Co-fondateur & Vidéaste', image: '/equipe/DSC00018.jpg' },
   { name: 'Neil Bettane', role: 'Co-fondateur & Vidéaste', image: '/equipe/DSC00021.jpg' },
-  { name: 'Nohé Mairecié', role: 'Vidéaste', image: '/equipe/DSC00024.jpg' },
-  { name: 'Aurélien Branco', role: 'Développeur Web', image: '/equipe/DSC00029.jpg' }
+  { name: 'Noé Mercier', role: 'Vidéaste', image: '/equipe/DSC00024.jpg' },
+  { name: 'Aurélien Branco', role: 'Développeur Web', image: '/equipe/aurelien.png' }
 ];
 
 const skills = [
