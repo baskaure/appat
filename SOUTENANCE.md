@@ -12,13 +12,13 @@
 - Chat relié à une fonction edge Supabase (rule-based) dans `supabase/functions/chatbot`.
 
 ## 3. Parcours utilisateur
-- **Hero** : vidéo plein écran, gradient, CTA “Voir nos réalisations” et “Discutons”.
-- **À propos** : texte court + grille de compétences (Pub, Interview, Motion, Photo, Réel).
-- **Équipe** : cartes verre/gradient avec photos et rôles.
-- **Vidéos** : grille filtrable par catégorie ouvrant des modales avec lecteurs Google Drive.
-- **Photos** : mosaïque cliquable, lightbox plein écran, navigation clavier/flèches.
-- **Contact** : formulaire (nom/email/message) avec alerte de succès (pas d’envoi réel).
-- **Footer** : logo + droits 2025.
+- **Arrivée sur la Hero** : l’utilisateur est directement plongé dans une vidéo plein écran qui pose l’univers d’APPÂT. Les gros titres et les CTA “Voir nos réalisations” et “Discutons” servent à capter l’attention et proposer tout de suite deux choix : découvrir le portfolio ou entrer en contact.
+- **Descente vers “À propos”** : en scrollant, il découvre un texte court qui explique l’ADN de l’agence, accompagné d’une grille de compétences (Pub, Interview, Motion, Photo, Réel). Cette étape contextualise ce que l’utilisateur a vu dans la Hero.
+- **Découverte de l’équipe** : juste après, la section “Équipe” met des visages sur la marque, avec des cartes type glassmorphism. L’objectif est de renforcer la confiance avant de montrer le portfolio détaillé.
+- **Exploration du portfolio vidéo** : la section “Vidéos” propose un filtrage par catégorie (Interview, Motion, Pub, Réel). L’utilisateur peut cibler ce qui l’intéresse, puis ouvrir chaque vidéo dans une modale pour la visionner sans quitter la page.
+- **Mise en avant du shooting photo** : la section “Photos” complète le portfolio en montrant la dimension shooting photo. La lightbox plein écran et la navigation fluide permettent de parcourir les images comme une galerie professionnelle.
+- **Prise de contact** : en fin de parcours, la section “Contact” propose un formulaire simple (nom, email, message) pour transformer l’intérêt en prise de brief. En parallèle, le bouton de chat est disponible à tout moment pour poser une question rapide.
+- **Footer** : il clôt la page avec le logo et les mentions, en rappelant la marque sans surcharger l’utilisateur.
 
 ## 4. Interactions et UX
 - Navbar collante qui s’opacifie au scroll.

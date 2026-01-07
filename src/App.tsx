@@ -226,7 +226,7 @@ export default function App() {
           </h1>
           
           <p className="text-xl md:text-2xl text-white/50 font-light max-w-2xl mx-auto mb-10 leading-relaxed">
-            Vidéaste & Direction Artistique.<br />
+            Equipe de Production<br />
             <span className="text-white/80">On raconte votre histoire.</span>
           </p>
           
