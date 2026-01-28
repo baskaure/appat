@@ -132,6 +132,7 @@ export default function App() {
   const [chatLoading, setChatLoading] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [currentVideo, setCurrentVideo] = useState('');
+  const [currentVideoMeta, setCurrentVideoMeta] = useState<{ title: string; description: string; category: string } | null>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -189,10 +190,15 @@ export default function App() {
     setFormData({ name: '', email: '', message: '' });
   };
 
-  const openVideo = (driveUrl: string) => {
-    const match = driveUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  const openVideo = (video: { driveUrl: string; title: string; description: string; category: string }) => {
+    const match = video.driveUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
     if (match) {
       setCurrentVideo(`https://drive.google.com/file/d/${match[1]}/preview`);
+      setCurrentVideoMeta({
+        title: video.title,
+        description: video.description,
+        category: video.category,
+      });
       setVideoModalOpen(true);
     }
   };
@@ -252,7 +258,7 @@ export default function App() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="#extraits" className="group flex items-center gap-3 px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-yellow-400 transition-all">
+            <a href="#vidéos" className="group flex items-center gap-3 px-8 py-4 bg-white text-black font-semibold rounded-full hover:bg-yellow-400 transition-all">
               Voir nos réalisations
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </a>
@@ -280,24 +286,33 @@ export default function App() {
                 <span className="text-white/40"> mémorables</span>
               </h2>
               <p className="text-lg text-white/50 leading-relaxed mb-6">
-                Passionnés par la création visuelle, nous transformons vos idées en contenus captivants. Notre approche combine technique cinématographique et vision artistique.
+              Fondée en 2025 à Lyon par Matteo Leite et Neil Betane, Appât est une société de production audiovisuelle qui transforme l’image de marque en levier de croissance.
               </p>
               <p className="text-lg text-white/50 leading-relaxed">
-                Nous travaillons avec des marques et des créateurs pour donner vie à leurs projets les plus ambitieux.
+              Notre collectif de six experts crée des contenus publicitaires et capte des événements avec une exigence cinématographique et une vision stratégique.
               </p>
             </div>
             
-            {/* Skills Grid - Style Revolut */}
-            <div className="grid grid-cols-2 gap-3">
-              {skills.map((skill, i) => (
-                <div key={i} className="group p-6 bg-white/[0.03] hover:bg-white/[0.06] rounded-2xl border border-white/5 hover:border-yellow-400/20 transition-all cursor-default">
-                  <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <span className="text-black font-bold text-sm">{String(i + 1).padStart(2, '0')}</span>
+            {/* Photo à la place du bloc de compétences */}
+            <div className="relative w-full h-full flex items-center justify-center">
+              <div className="relative w-full max-w-xl aspect-video rounded-3xl overflow-hidden border border-white/10 bg-white/[0.02]">
+                <img
+                  src="/equipe/équipe.png"
+                  alt="Tournage APPÂT"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/60 mb-1">Derrière la caméra</p>
+                    <p className="text-sm md:text-base font-medium text-white/90">
+                      Une équipe dédiée à transformer votre image en histoire.
+                    </p>
                   </div>
-                  <h3 className="font-semibold text-white mb-1">{skill.name}</h3>
-                  <p className="text-sm text-white/40">{skill.desc}</p>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
@@ -325,19 +340,19 @@ export default function App() {
       {/* Videos */}
       <section id="vidéos" className="py-32 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-6">
-            <div>
-              <p className="text-yellow-400 font-medium mb-4 tracking-wide text-sm">RÉALISATIONS</p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-                Nos vidéos
-              </h2>
-            </div>
-            <p className="text-white/50 max-w-md">Découvrez nos meilleures créations et plongez dans notre univers visuel.</p>
+          <div className="mb-12">
+            <p className="text-yellow-400 font-medium mb-4 tracking-wide text-sm">RÉALISATIONS</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
+              Nos vidéos
+            </h2>
+            <p className="text-white/50 max-w-2xl">
+              Découvrez nos meilleures créations et plongez dans notre univers visuel.
+            </p>
           </div>
           
           {/* Filtres par catégorie */}
           <div className="flex flex-wrap gap-2 mb-10">
-            {['Tous', 'Interview', 'Pub'].map((cat) => (
+            {['Tous', 'Interview', 'Pub', 'After Movie'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -355,39 +370,86 @@ export default function App() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               // Interview
-              { title: 'Interview -Lazy', category: 'Interview', driveUrl: 'https://drive.google.com/file/d/1P6W136wc2iE5zxCuVfaLka7bumoqUood/view', thumbnail: '/miniature/interview1.png' },
-              { title: 'Interview - BazeHouse', category: 'Interview', driveUrl: 'https://drive.google.com/file/d/1hy77gNUqS5OssmJcFSSbwmemx8hzwdRn/view', thumbnail: '/miniature/interview2.png' },
+              {
+                title: 'Interview - Lazy',
+                category: 'Interview',
+                driveUrl: 'https://drive.google.com/file/d/1P6W136wc2iE5zxCuVfaLka7bumoqUood/view',
+                thumbnail: '/miniature/interview1.png',
+                description: 'Portrait de Lazy, artiste parisien venu à Lyon pour une interview avec le média Censure, où il revient sur son parcours et annonce son prochain album.'
+              },
+              {
+                title: 'Interview - Camper X',
+                category: 'Interview',
+                driveUrl: 'https://drive.google.com/file/d/1hy77gNUqS5OssmJcFSSbwmemx8hzwdRn/view',
+                thumbnail: '/miniature/interview2.png',
+                description: 'Interview de Fabrice et Paulette, clients Camper X, qui racontent comment leur cellule off-road leur a permis d’adopter un nouveau mode de vie dans le désert marocain.'
+              },
               // Pub
-              { title: 'Publicité - HeloShot', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/1HyG7wXRJ1DX92j1C0ZbmO2PLP7v1yWF5/view', thumbnail: '/miniature/pub1.png' },
-              { title: 'Publicité - Nation', category: 'Pub', driveUrl: 'https://drive.google.com/file/d/121k2BQcfaER2lJn93HwWzrebpdZANZra/view', thumbnail: '/miniature/pub2.png' },
-            ].filter(video => activeCategory === 'Tous' || video.category === activeCategory).map((video, i) => (
-              <div key={i} className="group cursor-pointer" onClick={() => openVideo(video.driveUrl)}>
-                <div className="relative aspect-video rounded-2xl overflow-hidden bg-neutral-900 mb-4">
-                  {video.thumbnail ? (
-                    <img 
-                      src={video.thumbnail} 
-                      alt={video.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-amber-600/5" />
-                  )}
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center group-hover:bg-yellow-400 group-hover:scale-110 transition-all duration-300 border border-white/10">
-                      <Play className="w-7 h-7 text-white group-hover:text-black ml-1 transition-colors" />
+              {
+                title: 'Publicité - Holeshot Hydro',
+                category: 'Pub',
+                driveUrl: 'https://drive.google.com/file/d/1HyG7wXRJ1DX92j1C0ZbmO2PLP7v1yWF5/view',
+                thumbnail: '/miniature/pub1.png',
+                description: 'Spot pour Holeshot Hydro, la nouvelle gamme de boisson énergisante tournée vers les sports d’équipe, conçue après un échange créatif avec le responsable marketing.'
+              },
+              {
+                title: 'Publicité - Nation',
+                category: 'Pub',
+                driveUrl: 'https://drive.google.com/file/d/121k2BQcfaER2lJn93HwWzrebpdZANZra/view',
+                thumbnail: '/miniature/pub2.png',
+                description: 'Film publicitaire pour Nation, l’application qui connecte entrepreneurs et porteurs de projets, réalisé dans le cadre d’un concours d’aide au financement remporté par la marque.'
+              },
+              // After Movie
+              {
+                title: 'After Movie - Nouveau T-Roc',
+                category: 'After Movie',
+                driveUrl: 'https://drive.google.com/file/d/1JsLDXBwLQh6VNExPcGJqGLkuthpl6pBA/view?usp=sharing',
+                thumbnail: '/miniature/t-roc.png',
+                description: 'After movie d’un événement coorganisé par BYMYCAR Volkswagen et La Cave d’Or, mettant en avant un moment de convivialité autour du nouveau T-Roc.'
+              },
+              {
+                title: 'After Movie - Clio 6',
+                category: 'After Movie',
+                driveUrl: 'https://drive.google.com/file/d/1Tae00K7FpQ1s6Cqlhuw_aAIzEOPqh9aS/view?usp=sharing',
+                thumbnail: '/miniature/clio.png',
+                description: 'After movie de la soirée de lancement de la nouvelle Clio 6 pour BYMYCAR Renault, destiné à immortaliser l’événement et à renforcer le lien avec clients et collaborateurs.'
+              },
+            ]
+              .filter(video => activeCategory === 'Tous' || video.category === activeCategory)
+              .map((video, i) => (
+                <div key={i} className="group cursor-pointer" onClick={() => openVideo(video)}>
+                  <div className="relative aspect-video rounded-2xl overflow-hidden bg-neutral-900 mb-4">
+                    {video.thumbnail ? (
+                      <img
+                        src={video.thumbnail}
+                        alt={video.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:blur-sm"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-amber-600/5" />
+                    )}
+                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/60 backdrop-blur-none group-hover:backdrop-blur-sm transition-all" />
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center group-hover:bg-yellow-400 group-hover:scale-110 transition-all duration-300 border border-white/10">
+                        <Play className="w-7 h-7 text-white group-hover:text-black ml-1 transition-colors" />
+                      </div>
+                    </div>
+                    <div className="absolute top-4 left-4">
+                      <span className="px-3 py-1 bg-white/10 backdrop-blur-xl rounded-full text-xs font-medium text-white/80 border border-white/10">
+                        {video.category}
+                      </span>
+                    </div>
+                    <div className="absolute inset-x-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <h3 className="text-sm font-semibold text-white mb-1">{video.title}</h3>
+                      <p className="text-xs text-white/70 leading-snug line-clamp-2">
+                        {video.description}
+                      </p>
                     </div>
                   </div>
-                  <div className="absolute top-4 left-4">
-                    <span className="px-3 py-1 bg-white/10 backdrop-blur-xl rounded-full text-xs font-medium text-white/80 border border-white/10">
-                      {video.category}
-                    </span>
-                  </div>
+                  <h3 className="font-semibold text-lg group-hover:text-yellow-400 transition-colors">{video.title}</h3>
                 </div>
-                <h3 className="font-semibold text-lg group-hover:text-yellow-400 transition-colors">{video.title}</h3>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </section>
@@ -435,7 +497,7 @@ export default function App() {
               {
                 name: 'Holeshot',
                 role: 'Client',
-                text: 'Appât nous a permis de mettre en vidéo les idées que l\'on avait en tête. Après une réunion où nous avons pu exposer nos idées et nos attentes, Appât a parfaitement rempli la tâche que l\'on attendait d\'eux pour notre nouvelle gamme.',
+                text: 'Appât a su mettre en image nos idées pour le lancement de la gamme Holeshot Hydro, en respectant parfaitement nos attentes après les échanges créatifs.',
                 rating: 4
               },
               {
@@ -445,10 +507,10 @@ export default function App() {
                 rating: 5
               },
               {
-                name: 'Sophie Martin',
-                role: 'Directrice Marketing, TechCorp',
-                text: 'APPÂT a transformé notre vision en réalité. Leur direction artistique et leur expertise en motion design ont donné vie à notre campagne. Un rendu professionnel et créatif qui dépasse nos attentes.',
-                rating: 4
+                name: 'Nation',
+                role: 'Client',
+                text: 'L’échange et toutes les étapes de création ont été très fluides, ce qui nous a permis d’aboutir à cette superbe création.',
+                rating: 5
               }
             ].map((testimonial, i) => (
               <div key={i} className="p-6 bg-white/[0.03] rounded-2xl border border-white/5 hover:border-yellow-400/20 hover:bg-white/[0.05] transition-all">
@@ -586,12 +648,45 @@ export default function App() {
 
       {/* Video Modal */}
       {videoModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-2xl" onClick={() => setVideoModalOpen(false)}>
-          <button onClick={() => setVideoModalOpen(false)} className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-2xl px-4"
+          onClick={() => {
+            setVideoModalOpen(false);
+            setCurrentVideo('');
+            setCurrentVideoMeta(null);
+          }}
+        >
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setVideoModalOpen(false);
+              setCurrentVideo('');
+              setCurrentVideoMeta(null);
+            }}
+            className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all"
+          >
             <XCircle className="w-6 h-6 text-white" />
           </button>
           <div className="w-full max-w-5xl mx-4" onClick={(e) => e.stopPropagation()}>
-            <iframe src={currentVideo} className="w-full aspect-video rounded-2xl" allow="autoplay; encrypted-media" allowFullScreen />
+            <iframe
+              src={currentVideo}
+              className="w-full aspect-video rounded-2xl mb-4"
+              allow="autoplay; encrypted-media"
+              allowFullScreen
+            />
+            {currentVideoMeta && (
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-4 md:p-5">
+                <p className="text-xs uppercase tracking-[0.2em] text-white/50 mb-2">
+                  {currentVideoMeta.category}
+                </p>
+                <h3 className="text-lg md:text-xl font-semibold text-white mb-2">
+                  {currentVideoMeta.title}
+                </h3>
+                <p className="text-sm text-white/70 leading-relaxed">
+                  {currentVideoMeta.description}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}
