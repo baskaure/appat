@@ -328,9 +328,12 @@ export default function App() {
             <span className="font-semibold text-lg tracking-tight hidden sm:block">APPÂT</span>
           </a>
           <div className="hidden md:flex items-center gap-8">
-            {['À propos', 'Équipe', 'Vidéos', 'Photos', 'Contact'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase().replace('à ', '')}`} 
-                className="text-[13px] font-medium text-white/70 hover:text-white transition-colors">
+            {['À propos', 'Équipe', 'Vidéos', 'Photos', 'Tarifs', 'Contact'].map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase().replace('à ', '')}`}
+                className="text-[13px] font-medium text-white/70 hover:text-white transition-colors"
+              >
                 {item}
               </a>
             ))}
