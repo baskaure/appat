@@ -33,7 +33,7 @@ const teamMembers = [
   { 
     name: 'Matteo Leite', 
     role: 'Co-fondateur & Vidéaste', 
-    image: '/equipe/DSC00018.jpg',
+    image: '/equipe/DSC00013.jpg',
     bio: 'Cadre, réalise et dirige les tournages avec une approche cinématographique.' 
   },
   { 
@@ -51,7 +51,7 @@ const teamMembers = [
   { 
     name: 'Aurélien Branco', 
     role: 'Développeur Web', 
-    image: '/equipe/aurelien.png',
+    image: '/equipe/aurelien.jpeg',
     bio: 'Donne vie à vos expériences digitales avec des interfaces fluides.' 
   }
 ];
@@ -686,6 +686,85 @@ export default function App() {
               </p>
             </>
           )}
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="tarifs" className="py-32 px-6 bg-gradient-to-b from-transparent via-white/[0.03] to-transparent">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-yellow-400 font-medium mb-4 tracking-wide text-sm">TARIFS</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+              Des formules claires
+              <span className="text-white/40"> pour vos projets</span>
+            </h2>
+            <p className="mt-4 text-white/50 max-w-2xl mx-auto">
+              Des bases de prix pour vous situer rapidement. Chaque projet reste unique&nbsp;: on ajuste ensemble en fonction de vos besoins.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Pack 1 */}
+            <div className="relative p-8 rounded-3xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.05] hover:border-yellow-400/40 transition-all">
+              <div className="absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent opacity-60" />
+              <p className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">Pack photo</p>
+              <h3 className="text-2xl font-semibold mb-2">1 séance photo</h3>
+              <p className="text-sm text-white/50 mb-6">
+                Idéal pour mettre à jour vos visuels, votre équipe ou un lieu.
+              </p>
+              <p className="text-3xl font-bold text-yellow-400 mb-2">À partir de 250&nbsp;€</p>
+              <p className="text-xs text-white/40 mb-6">Prix indicatif, hors déplacement et options.</p>
+              <ul className="space-y-2 text-sm text-white/70 mb-8">
+                <li>• Préparation du shooting</li>
+                <li>• Prise de vue sur place</li>
+                <li>• Sélection et retouches de base</li>
+              </ul>
+              <a href="#contact" className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-yellow-400 transition-colors">
+                Discuter de ce pack
+              </a>
+            </div>
+
+            {/* Pack 2 */}
+            <div className="relative p-8 rounded-3xl border border-yellow-400/60 bg-white/[0.04] shadow-[0_0_40px_rgba(250,204,21,0.15)]">
+              <div className="absolute right-6 top-6 px-3 py-1 rounded-full bg-yellow-400 text-black text-[11px] font-semibold tracking-wide">
+                LE PLUS DEMANDÉ
+              </div>
+              <p className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">Pack photo &amp; vidéo</p>
+              <h3 className="text-2xl font-semibold mb-2">Photo + vidéo</h3>
+              <p className="text-sm text-white/50 mb-6">
+                Pour raconter votre histoire avec un combo visuels + film court.
+              </p>
+              <p className="text-3xl font-bold text-yellow-400 mb-2">À partir de 500&nbsp;€</p>
+              <p className="text-xs text-white/40 mb-6">Prix indicatif, adapté selon durée et complexité.</p>
+              <ul className="space-y-2 text-sm text-white/70 mb-8">
+                <li>• Tournage photo &amp; vidéo</li>
+                <li>• Montage d’un film court</li>
+                <li>• Versions optimisées pour les réseaux</li>
+              </ul>
+              <a href="#contact" className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-yellow-400 text-black text-sm font-semibold hover:bg-white transition-colors">
+                Parler de votre projet
+              </a>
+            </div>
+
+            {/* Pack 3 */}
+            <div className="relative p-8 rounded-3xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.05] hover:border-yellow-400/40 transition-all">
+              <p className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">Pack sur-mesure</p>
+              <h3 className="text-2xl font-semibold mb-2">Sur devis</h3>
+              <p className="text-sm text-white/50 mb-6">
+                Campagne complète, événement, série de contenus ou besoin spécifique.
+              </p>
+              <p className="text-lg font-semibold text-yellow-400 mb-2">Devis personnalisé</p>
+              <p className="text-xs text-white/40 mb-6">On construit ensemble la meilleure approche pour votre marque.</p>
+              <ul className="space-y-2 text-sm text-white/70 mb-8">
+                <li>• Stratégie créative</li>
+                <li>• Production multi-formats</li>
+                <li>• Accompagnement sur la diffusion</li>
+              </ul>
+              <a href="#contact" className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-yellow-400 transition-colors">
+                Demander un devis
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
