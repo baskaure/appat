@@ -18,12 +18,42 @@ const shootingPhotos = [
 ];
 
 const teamMembers = [
-  { name: 'Léo Navarro', role: 'Directeur Marketing', image: '/equipe/DSC00009.jpg' },
-  { name: 'Matteo Brosolo', role: 'Directeur Communication', image: '/equipe/DSC00011.jpg' },
-  { name: 'Matteo Leite', role: 'Co-fondateur & Vidéaste', image: '/equipe/DSC00018.jpg' },
-  { name: 'Neil Bettane', role: 'Co-fondateur & Vidéaste', image: '/equipe/DSC00021.jpg' },
-  { name: 'Noé Mercier', role: 'Vidéaste', image: '/equipe/DSC00024.jpg' },
-  { name: 'Aurélien Branco', role: 'Développeur Web', image: '/equipe/aurelien.png' }
+  { 
+    name: 'Léo Navarro', 
+    role: 'Directeur Marketing', 
+    image: '/equipe/DSC00009.jpg',
+    bio: 'Imagine les campagnes qui donnent envie de cliquer et d’acheter.' 
+  },
+  { 
+    name: 'Matteo Brosolo', 
+    role: 'Directeur Communication', 
+    image: '/equipe/DSC00011.jpg',
+    bio: 'Transforme vos messages en histoires claires et percutantes.' 
+  },
+  { 
+    name: 'Matteo Leite', 
+    role: 'Co-fondateur & Vidéaste', 
+    image: '/equipe/DSC00018.jpg',
+    bio: 'Cadre, réalise et dirige les tournages avec une approche cinématographique.' 
+  },
+  { 
+    name: 'Neil Bettane', 
+    role: 'Co-fondateur & Vidéaste', 
+    image: '/equipe/DSC00021.jpg',
+    bio: 'Donne du rythme à vos projets avec une mise en scène précise.' 
+  },
+  { 
+    name: 'Noé Mercier', 
+    role: 'Vidéaste', 
+    image: '/equipe/DSC00024.jpg',
+    bio: 'Capture les instants forts et les transforme en images marquantes.' 
+  },
+  { 
+    name: 'Aurélien Branco', 
+    role: 'Développeur Web', 
+    image: '/equipe/aurelien.png',
+    bio: 'Donne vie à vos expériences digitales avec des interfaces fluides.' 
+  }
 ];
 
 const skills = [
@@ -67,6 +97,14 @@ const TeamMemberCard = memo(({ member }: { member: typeof teamMembers[0] }) => {
           }`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+        {/* Description au survol */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="bg-black/75 backdrop-blur-md rounded-2xl px-4 py-3 border border-white/10 max-w-[85%]">
+            <p className="text-xs sm:text-sm text-white/80 leading-relaxed text-center">
+              {member.bio}
+            </p>
+          </div>
+        </div>
         
         {/* Info card - style Revolut */}
         <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -81,6 +119,64 @@ const TeamMemberCard = memo(({ member }: { member: typeof teamMembers[0] }) => {
 });
 
 TeamMemberCard.displayName = 'TeamMemberCard';
+
+const ShootingPhotoCard = memo(
+  ({ photo, index, onClick }: { photo: string; index: number; onClick: (index: number) => void }) => {
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    return (
+      <div
+        key={index}
+        onClick={() => onClick(index)}
+        className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer bg-neutral-900"
+      >
+        {!isLoaded && <div className="absolute inset-0 bg-neutral-800 animate-pulse" />}
+        <img
+          src={photo}
+          alt={`Shooting ${index + 1}`}
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setIsLoaded(true)}
+          className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+            isLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all">
+            <Expand className="w-5 h-5 text-black" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+
+ShootingPhotoCard.displayName = 'ShootingPhotoCard';
+
+const PartnerLogoCard = memo(({ logo, index }: { logo: string; index: number }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <div
+      key={`partner-${index}`}
+      className="relative flex-shrink-0 w-32 h-24 mx-4 flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 hover:border-yellow-400/20 transition-all group"
+    >
+      {!isLoaded && <div className="absolute inset-0 bg-neutral-800/80 animate-pulse rounded-xl" />}
+      <img
+        src={logo}
+        alt={`Partenaire ${index + 1}`}
+        className={`max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-opacity ${
+          isLoaded ? 'opacity-70 group-hover:opacity-100' : 'opacity-0'
+        }`}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setIsLoaded(true)}
+      />
+    </div>
+  );
+});
+
+PartnerLogoCard.displayName = 'PartnerLogoCard';
 
 const Lightbox = memo(({ images, currentIndex, onClose, onNext, onPrev }: { 
   images: string[]; currentIndex: number; onClose: () => void; onNext: () => void; onPrev: () => void;
@@ -111,7 +207,13 @@ const Lightbox = memo(({ images, currentIndex, onClose, onNext, onPrev }: {
         <ChevronRight className="w-7 h-7 text-white" />
       </button>
       <div className="relative max-w-6xl max-h-[85vh] mx-4" onClick={(e) => e.stopPropagation()}>
-        <img src={images[currentIndex]} alt={`Photo ${currentIndex + 1}`} className="max-w-full max-h-[85vh] object-contain rounded-2xl" />
+        <img 
+          src={images[currentIndex]} 
+          alt={`Photo ${currentIndex + 1}`} 
+          className="max-w-full max-h-[85vh] object-contain rounded-2xl"
+          loading="lazy"
+          decoding="async"
+        />
         <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex gap-2">
           {images.map((_, i) => (
             <div key={i} className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? 'bg-yellow-400 w-6' : 'bg-white/30'}`} />
@@ -136,6 +238,7 @@ export default function App() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [heroVideoVisible, setHeroVideoVisible] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>('Tous');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -143,6 +246,11 @@ export default function App() {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setHeroVideoVisible(true), 300);
+    return () => window.clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
@@ -235,9 +343,18 @@ export default function App() {
 
       {/* Hero - Style Apple */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
-          <source src="/video.mp4" type="video/mp4" />
-        </video>
+        {heroVideoVisible && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src="/video.mp4" type="video/mp4" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
         
         <div className="relative z-10 text-center px-6 max-w-5xl pt-16">
@@ -425,6 +542,7 @@ export default function App() {
                         alt={video.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:blur-sm"
                         loading="lazy"
+                        decoding="async"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/10 to-amber-600/5" />
@@ -466,16 +584,7 @@ export default function App() {
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {shootingPhotos.map((photo, i) => (
-              <div key={i} onClick={() => openLightbox(i)}
-                className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer bg-neutral-900">
-                <img src={photo} alt={`Shooting ${i + 1}`} loading="lazy" decoding="async"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all">
-                    <Expand className="w-5 h-5 text-black" />
-                  </div>
-                </div>
-              </div>
+              <ShootingPhotoCard key={i} photo={photo} index={i} onClick={openLightbox} />
             ))}
           </div>
         </div>
@@ -555,25 +664,11 @@ export default function App() {
               <div className="partners-scroll flex items-center">
                 {/* Première série de logos */}
                 {partnerLogos.map((logo, i) => (
-                  <div key={`partner-${i}`} className="flex-shrink-0 w-32 h-24 mx-4 flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 hover:border-yellow-400/20 transition-all group">
-                    <img 
-                      src={logo} 
-                      alt={`Partenaire ${i + 1}`}
-                      className="max-w-full max-h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
-                      loading="lazy"
-                    />
-                  </div>
+                  <PartnerLogoCard key={`partner-${i}`} logo={logo} index={i} />
                 ))}
                 {/* Deuxième série (dupliquée pour l'effet de boucle) */}
                 {partnerLogos.map((logo, i) => (
-                  <div key={`partner-duplicate-${i}`} className="flex-shrink-0 w-32 h-24 mx-4 flex items-center justify-center p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 hover:border-yellow-400/20 transition-all group">
-                    <img 
-                      src={logo} 
-                      alt={`Partenaire ${i + 1}`}
-                      className="max-w-full max-h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
-                      loading="lazy"
-                    />
-                  </div>
+                  <PartnerLogoCard key={`partner-duplicate-${i}`} logo={logo} index={i} />
                 ))}
               </div>
             </div>
@@ -639,7 +734,13 @@ export default function App() {
       <footer className="py-12 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <img src="/LOGO2.png" alt="APPÂT" className="w-8 h-8 rounded-lg" />
+            <img 
+              src="/LOGO2.png" 
+              alt="APPÂT" 
+              className="w-8 h-8 rounded-lg" 
+              loading="lazy"
+              decoding="async"
+            />
             <span className="font-medium">APPÂT</span>
           </div>
           <p className="text-white/40 text-sm">© 2025 APPÂT. Tous droits réservés.</p>
