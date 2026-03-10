@@ -14,7 +14,9 @@ const shootingPhotos = [
   '/shooting/2.JPG',
   '/shooting/3.JPG',
   '/shooting/4.JPG',
-  '/shooting/5.jpeg',
+  '/shooting/5.jpg',
+  '/shooting/6.jpg',
+  '/shooting/7.jpg',
 ];
 
 const teamMembers = [
