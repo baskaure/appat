@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
-import { Mail, Play, MessageCircle, X, Send, XCircle, ChevronLeft, ChevronRight, Expand, ArrowRight, Sparkles, Star } from 'lucide-react';
+import { Mail, Play, MessageCircle, X, Send, XCircle, ChevronLeft, ChevronRight, Expand, ArrowRight, Sparkles, Star, Shield } from 'lucide-react';
 import SplitText from './SplitText';
 import { ConfettiButton } from './ConfettiButton';
 
@@ -8,6 +8,15 @@ interface Message {
   text: string;
   sender: 'user' | 'bot';
   timestamp: Date;
+}
+
+interface ContactRequest {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  offer?: string | null;
+  createdAt: Date;
 }
 
 // Données
@@ -248,6 +257,8 @@ export default function App() {
   const [heroVideoVisible, setHeroVideoVisible] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>('Tous');
   const [selectedOffer, setSelectedOffer] = useState<string | null>(null);
+  const [contactRequests, setContactRequests] = useState<ContactRequest[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -302,7 +313,16 @@ export default function App() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Message envoyé ! Merci de votre intérêt.');
+    const newRequest: ContactRequest = {
+      id: Date.now().toString(),
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+      offer: selectedOffer,
+      createdAt: new Date(),
+    };
+    setContactRequests(prev => [newRequest, ...prev]);
+    alert('Message enregistré ! Il est visible dans le panneau admin.');
     setFormData({ name: '', email: '', message: '' });
   };
 
@@ -900,9 +920,78 @@ export default function App() {
             />
             <span className="font-medium">APPÂT</span>
           </div>
-          <p className="text-white/40 text-sm">© 2025 APPÂT. Tous droits réservés.</p>
+          <div className="flex items-center gap-4">
+            <p className="text-white/40 text-sm">© 2025 APPÂT. Tous droits réservés.</p>
+            <button
+              type="button"
+              onClick={() => {
+                const pwd = window.prompt('Accès admin - mot de passe ?');
+                if (pwd === 'appat-admin') {
+                  setIsAdmin(true);
+                }
+              }}
+              className="flex items-center gap-1 text-[11px] text-white/30 hover:text-yellow-400 transition-colors"
+            >
+              <Shield className="w-3 h-3" />
+              <span>Admin</span>
+            </button>
+          </div>
         </div>
       </footer>
+
+      {/* Admin Panel (local, non persistant) */}
+      {isAdmin && (
+        <section className="py-16 px-6 bg-black/90 border-t border-white/10">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-yellow-400" />
+                <h3 className="text-sm font-semibold tracking-wide text-white/80">Panneau admin — Demandes de contact</h3>
+              </div>
+              <span className="text-xs text-white/40">
+                {contactRequests.length === 0
+                  ? 'Aucune demande pour le moment'
+                  : `${contactRequests.length} demande(s) enregistrée(s) — local uniquement`}
+              </span>
+            </div>
+
+            {contactRequests.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-white/10 p-6 text-sm text-white/40">
+                Les messages envoyés via le formulaire apparaîtront ici tant que la page reste ouverte.
+              </div>
+            ) : (
+              <div className="space-y-4 max-h-[400px] overflow-y-auto pr-1">
+                {contactRequests.map((req) => (
+                  <div
+                    key={req.id}
+                    className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-sm"
+                  >
+                    <div className="flex items-center justify-between mb-2 gap-3">
+                      <div>
+                        <p className="font-semibold text-white">
+                          {req.name}{' '}
+                          <span className="text-white/50 text-xs">&lt;{req.email}&gt;</span>
+                        </p>
+                        {req.offer && (
+                          <p className="text-[11px] text-yellow-300/80 mt-1">
+                            Offre sélectionnée : {req.offer}
+                          </p>
+                        )}
+                      </div>
+                      <span className="text-[11px] text-white/40 whitespace-nowrap">
+                        {req.createdAt.toLocaleString('fr-FR')}
+                      </span>
+                    </div>
+                    <p className="text-white/80 whitespace-pre-wrap leading-relaxed">
+                      {req.message}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Video Modal */}
       {videoModalOpen && (
