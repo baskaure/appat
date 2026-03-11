@@ -10,7 +10,7 @@ interface Message {
 
 // Données
 const shootingPhotos = [
-  '/shooting/1.JPG',
+  '/shooting/7.jpg',
   '/shooting/2.JPG',
   '/shooting/3.JPG',
   '/shooting/4.JPG',
@@ -411,7 +411,7 @@ export default function App() {
                 <span className="text-white/40"> mémorables</span>
               </h2>
               <p className="text-lg text-white/50 leading-relaxed mb-6">
-              Fondée en 2025 à Lyon par Matteo Leite et Neil Betane, Appât est une société de production audiovisuelle qui transforme l’image de marque en levier de croissance.
+              Fondée en 2025 à Lyon par Matteo Leite et Neil Bettane, Appât est une société de production audiovisuelle qui transforme l’image de marque en levier de croissance.
               </p>
               <p className="text-lg text-white/50 leading-relaxed">
               Notre collectif de six experts crée des contenus publicitaires et capte des événements avec une exigence cinématographique et une vision stratégique.
