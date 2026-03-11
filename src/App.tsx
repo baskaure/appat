@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { Mail, Play, MessageCircle, X, Send, XCircle, ChevronLeft, ChevronRight, Expand, ArrowRight, Sparkles, Star } from 'lucide-react';
+import SplitText from './SplitText';
+import { ConfettiButton } from './ConfettiButton';
 
 interface Message {
   id: string;
@@ -245,6 +247,7 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [heroVideoVisible, setHeroVideoVisible] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>('Tous');
+  const [selectedOffer, setSelectedOffer] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -321,6 +324,16 @@ export default function App() {
   const nextImage = useCallback(() => setLightboxIndex((prev) => (prev + 1) % shootingPhotos.length), []);
   const prevImage = useCallback(() => setLightboxIndex((prev) => (prev - 1 + shootingPhotos.length) % shootingPhotos.length), []);
 
+  const scrollToContactWithOffer = useCallback((offerLabel: string) => {
+    setSelectedOffer(offerLabel);
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.location.hash = '#contact';
+    }
+  }, []);
+
   return (
     <div className="bg-[#0a0a0a] text-white min-h-screen overflow-x-hidden antialiased">
       {/* Navigation - Style Apple */}
@@ -372,9 +385,20 @@ export default function App() {
           </div>
           
           <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-6">
-            <span className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
-              APPÂT
-            </span>
+            <SplitText
+              text="APPÂT"
+              className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent inline-block"
+              delay={60}
+              duration={1.2}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-80px"
+              textAlign="center"
+              tag="span"
+            />
           </h1>
           
           <p className="text-xl md:text-2xl text-white/50 font-light max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -506,7 +530,7 @@ export default function App() {
                 title: 'Interview - Camper X',
                 category: 'Interview',
                 driveUrl: 'https://drive.google.com/file/d/1hy77gNUqS5OssmJcFSSbwmemx8hzwdRn/view',
-                thumbnail: '/miniature/interview2.png',
+                thumbnail: '/miniature/popolette.jpeg',
                 description: 'Interview de Fabrice et Paulette, clients Camper X, qui racontent comment leur cellule off-road leur a permis d’adopter un nouveau mode de vie dans le désert marocain.'
               },
               // Pub
@@ -727,9 +751,12 @@ export default function App() {
                 <li>• Prise de vue sur place</li>
                 <li>• Sélection et retouches de base</li>
               </ul>
-              <a href="#contact" className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-yellow-400 transition-colors">
-                Discuter de ce pack
-              </a>
+              <ConfettiButton
+                onClick={() => scrollToContactWithOffer('Pack photo – à partir de 250 €')}
+                className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-yellow-400 transition-colors"
+              >
+                Séléctionner
+              </ConfettiButton>
             </div>
 
             {/* Pack 2 */}
@@ -749,9 +776,12 @@ export default function App() {
                 <li>• Montage d’un film court</li>
                 <li>• Versions optimisées pour les réseaux</li>
               </ul>
-              <a href="#contact" className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-yellow-400 text-black text-sm font-semibold hover:bg-white transition-colors">
-                Parler de votre projet
-              </a>
+              <ConfettiButton
+                onClick={() => scrollToContactWithOffer('Pack photo + vidéo – à partir de 500 €')}
+                className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-yellow-400 text-black text-sm font-semibold hover:bg-white transition-colors"
+              >
+                Séléctionner
+              </ConfettiButton>
             </div>
 
             {/* Pack 3 */}
@@ -768,9 +798,12 @@ export default function App() {
                 <li>• Production multi-formats</li>
                 <li>• Accompagnement sur la diffusion</li>
               </ul>
-              <a href="#contact" className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-yellow-400 transition-colors">
-                Demander un devis
-              </a>
+              <ConfettiButton
+                onClick={() => scrollToContactWithOffer('Pack sur-mesure – devis personnalisé')}
+                className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-yellow-400 transition-colors"
+              >
+                Séléctionner
+              </ConfettiButton>
             </div>
           </div>
         </div>
@@ -779,37 +812,74 @@ export default function App() {
       {/* Contact - Style Framer */}
       <section id="contact" className="py-32 px-6">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <p className="text-yellow-400 font-medium mb-4 tracking-wide text-sm">CONTACT</p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
               Un projet en tête ?
             </h2>
-            <p className="text-xl text-white/50">Parlons-en et créons quelque chose d'exceptionnel ensemble.</p>
+            <p className="text-xl text-white/50 mb-4">
+              Parlez-nous de votre besoin, on revient vers vous avec une proposition claire.
+            </p>
+            {selectedOffer && (
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-yellow-400/40 text-xs md:text-sm text-white/80">
+                <span className="w-2 h-2 rounded-full bg-yellow-400" />
+                <span>Offre sélectionnée&nbsp;: <strong className="text-yellow-400">{selectedOffer}</strong></span>
+              </div>
+            )}
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid md:grid-cols-2 gap-5">
               <div>
                 <label className="block text-sm font-medium text-white/60 mb-2">Nom</label>
-                <input type="text" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})}
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-yellow-400/50 focus:bg-white/[0.07] transition-all"
-                  placeholder="Votre nom" required />
+                  placeholder="Votre nom"
+                  required
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-white/60 mb-2">Email</label>
-                <input type="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})}
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-yellow-400/50 focus:bg-white/[0.07] transition-all"
-                  placeholder="votre@email.com" required />
+                  placeholder="votre@email.com"
+                  required
+                />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/60 mb-2">Message</label>
-              <textarea value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} rows={5}
-                className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-yellow-400/50 focus:bg-white/[0.07] transition-all resize-none"
-                placeholder="Parlez-nous de votre projet..." required />
+              <label className="block text-sm font-medium text-white/60 mb-2">
+                Offre souhaitée <span className="text-white/40">(optionnel)</span>
+              </label>
+              <input
+                type="text"
+                value={selectedOffer ?? ''}
+                onChange={(e) => setSelectedOffer(e.target.value || null)}
+                className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-yellow-400/50 focus:bg-white/[0.07] transition-all"
+                placeholder="Ex&nbsp;: Pack photo – à partir de 250 €"
+              />
             </div>
-            <button type="submit"
-              className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-white text-black font-semibold rounded-xl hover:bg-yellow-400 transition-colors">
+            <div>
+              <label className="block text-sm font-medium text-white/60 mb-2">Message</label>
+              <textarea
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                rows={5}
+                className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-yellow-400/50 focus:bg-white/[0.07] transition-all resize-none"
+                placeholder="Parlez-nous de votre projet, de vos objectifs et de vos contraintes de timing..."
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full flex items-center justify-center gap-3 px-8 py-5 bg-white text-black font-semibold rounded-xl hover:bg-yellow-400 transition-colors"
+            >
               <Mail className="w-5 h-5" />
               Envoyer le message
             </button>
