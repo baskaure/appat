@@ -405,20 +405,9 @@ export default function App() {
           </div>
           
           <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-6">
-            <SplitText
-              text="APPÂT"
-              className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent inline-block"
-              delay={60}
-              duration={1.2}
-              ease="power3.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 40 }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0.1}
-              rootMargin="-80px"
-              textAlign="center"
-              tag="span"
-            />
+            <span className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent inline-block">
+              APPÂT
+            </span>
           </h1>
           
           <p className="text-xl md:text-2xl text-white/50 font-light max-w-2xl mx-auto mb-10 leading-relaxed">
