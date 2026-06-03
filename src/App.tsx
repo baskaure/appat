@@ -366,7 +366,7 @@ export default function App() {
             <span className="font-semibold text-lg tracking-tight hidden sm:block">APPÂT</span>
           </a>
           <div className="hidden md:flex items-center gap-8">
-            {['À propos', 'Équipe', 'Vidéos', 'Photos', 'Tarifs', 'Contact'].map((item) => (
+            {['À propos', 'Équipe', 'Vidéos', 'Photos', 'Contact'].map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase().replace('à ', '')}`}
@@ -730,7 +730,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Pricing - masqué pour l'instant */}
+      {false && (
       <section id="tarifs" className="py-32 px-6 bg-gradient-to-b from-transparent via-white/[0.03] to-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -817,6 +818,7 @@ export default function App() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Contact - Style Framer */}
       <section id="contact" className="py-32 px-6">
